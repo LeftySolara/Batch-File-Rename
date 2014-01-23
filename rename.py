@@ -49,14 +49,28 @@ def prompt():
 def choose_files(files):
 	""" Prompts user to choose files to edit """
 
-	print("Enter the number of each file to edit, separated by commas.")
-	choice = input("> ")
-	choice_list = choice.split(",")
-	chosen_files = []
-	for i in choice_list:
-		i = int(i)
-		name = files[i]
-		chosen_files.append(name)
+	chosen = False
+	while chosen == False:
+		print("Enter the number of each file to edit (separated by commas) or 'a' for all.")
+		choice = input("> ")
+		choice_list = choice.split(",")
+		chosen_files = []
+		print("Files chosen:")
+		if choice_list[0] == "a":
+			chosen_files = [i for i in listdir()]
+		else:
+			for i in choice_list:
+				i = int(i)
+				name = files[i]
+				chosen_files.append(name)
+		for filename in chosen_files:
+			print(filename,end=" ")
+		print("")
+		confirm = input("Use these files? ")
+		if confirm.upper() == "Y":
+			chosen = True
+		elif confirm.upper() == "N":
+			pass
 	return chosen_files
 
 def type_choice(file_list):
@@ -68,7 +82,7 @@ def type_choice(file_list):
 	if option == "add":
 		add_text(file_list)
 	elif option == "remove":
-		remove_text()
+		remove_text(file_list)
 	elif option == "replace":
 		replace_text()
 	elif option == "change case":
@@ -78,9 +92,19 @@ def add_text(file_list):
 	""" Adds text to file names """
 	print("Enter text to add to file:")
 	edit = input("> ")
+	for i in file_list:
+		index = i.index(".")
+		new_name = i[:index] + edit + i[index:]
+		rename(i,new_name)
 
-def remove_text():
+def remove_text(file_list):
 	""" Removes text from file names """
+	print("Enter text to remove from file:")
+	edit = input("> ")
+	for name in file_list:
+		index = name.index(edit)
+		new_name = name[:index] + name[len(edit) + index:]
+		rename(name,new_name)
 
 def replace_text():
 	""" Replaces text in file names """
