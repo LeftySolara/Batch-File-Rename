@@ -1,5 +1,4 @@
 # Batch file renamer
-# Future feature: select "starts with", "ends with", "contains", etc.
 
 from os import chdir, getcwd, listdir, rename
 from os.path import dirname, exists, expanduser, isfile, isdir
@@ -8,7 +7,6 @@ from sys import exit
 
 def change_dir():
 	""" Changes current working directory. """
-	# Error check: invalid directory entered
 
 	print("Enter desired directory path:")
 	path = input("> ")
@@ -27,8 +25,6 @@ def show_files():
 			print("{:>3}: {} (file)".format(index,i))
 		elif isdir(i) == True:
 			print("{:>3}: {} (directory)".format(index,i))
-		else:
-			print("UFO")  # debugging
 	return dir_list
 
 def prompt():
@@ -84,9 +80,7 @@ def type_choice(file_list):
 	elif option == "remove":
 		remove_text(file_list)
 	elif option == "replace":
-		replace_text()
-	elif option == "change case":
-		change_case()
+		replace_text(file_list)
 
 def add_text(file_list):
 	""" Adds text to file names """
@@ -106,11 +100,15 @@ def remove_text(file_list):
 		new_name = name[:index] + name[len(edit) + index:]
 		rename(name,new_name)
 
-def replace_text():
+def replace_text(file_list):
 	""" Replaces text in file names """
-
-def change_case():
-	""" Changes case in file names """
+	print("Enter text to replace:")
+	old = input("> ")
+	print("Enter replacement text:")
+	new = input("> ")
+	for name in file_list:
+		new_name = name.replace(old,new)
+		rename(name,new_name)
 
 def main():
 	prompt()
