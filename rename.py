@@ -25,6 +25,7 @@ def show_files():
 			print("{:>3}: {} (file)".format(index,i))
 		elif isdir(i) == True:
 			print("{:>3}: {} (directory)".format(index,i))
+	print("")
 	return dir_list
 
 def prompt():
@@ -78,7 +79,11 @@ def type_choice(file_list):
 	if option == "add":
 		add_text(file_list)
 	elif option == "remove":
-		remove_text(file_list)
+		try:
+			remove_text(file_list)
+		except ValueError:
+			print("Substring not found.")
+			type_choice(file_list)
 	elif option == "replace":
 		replace_text(file_list)
 
